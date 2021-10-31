@@ -72,28 +72,69 @@ let topMovies = [
     }
 ];
 
-// GET requests
-app.get('/movies', (req, res, next) => {
+//Return the home page of myFlix App
+app.get('/', (req, res) =>{
+    res.send('Welcome to myFlix App');
+})
+
+// Return a list of ALL movies to the user
+app.get('/movies', (req, res) => {
     res.json(topMovies);
-    next();
 });
 
-app.get('/', (req, res, next) => {
-    res.send('Welcome to myFlix app');
-    next();
+
+// Return data (description, genre, director, image URL, whether it’s featured or not) about a single movie by title to the user
+app.get('/movies/:title', (req, res) => {
+    res.json(topMovies.find( (movie) => {
+        return movie.title === req.params.title 
+    }));
 });
 
-app.get('/documentation', (req, res) => {
-    res.sendFile('public/documentation.html', { root: __dirname }
-    );
+//Return data about a genre (description) by name/title (e.g., “Thriller”)
+app.get('/movies/:title/genre', (req, res) => {
+    res.send('Successful GET request returning data about a genre.');
 });
 
-app.use((err, req, res, next) => {
-    console.error(err.stack);
-    res.status(500).send('Something broke!');
-  });
+//Return data about a director (bio, birth year, death year) by name
+app.get('/movies/directors/:name', (req, res) => {
+    res.send('Successful GET request returning data about a director.');
+});
+
+//Allow new users to register
+app.post('/newUser', (req, res) => {
+    res.send('Successful POST request - new user is registered');
+});
+
+//Allow users to update their user info (username)
+app.put('/newUser/:id/info', (req, res) => {
+    res.send('Successful PUT request - user info is updated');
+});
+
+//Allow users to add a movie to their list of favorites 
+app.post('/newUser/:id/favourites', (req, res) => {
+    res.send('Successful POST request - user added a movie to their favourites');
+});
+
+//Allow users to remove a movie from their list of favorites 
+app.delete('/newUser/:id/favourites', (req, res) => {
+    res.send('Successful DELETE request - user removed movie from favourites');
+});
+
+//Allow existing users to deregister 
+app.delete('/newUser', (req, res) => {
+    res.send('Successful DELETE request - user has deregistered');
+});
+ 
+
 
 // listen for requests
 app.listen(8080, () => {
     console.log('Your app is listening on port 8080.');
   }); 
+
+//Error Handler
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500).send('Something broke!');
+  });
+
