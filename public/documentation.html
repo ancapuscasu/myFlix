@@ -67,23 +67,25 @@
             <td>A JSON object holding data about the new user
                 <br>
                 Example: {
-                firstName: 'Olive',
-                lastName: 'Cat'
-                username: 'meowmeow',
-                password: 'catsrule',
-                emailAddress: 'olive.cat@gmail.com'
-                }
+                    "FirstName": "Olive",
+                    "LastName": "Cat",
+                    "Username": "meowmeow",
+                    "Email": "olive.cat@gmail.com",
+                    "Password": "catsrule",
+                    "Birthdate": "2016-03-18"
+                    }
             </td>
             <td>A JSON object holding data about the new user, with an id
                 <br>
                 Example: {
-                id: 158
-                firstName: 'Olive',
-                lastName: 'Cat'
-                username: 'meowmeow',
-                password: 'catsrule',
-                emailAddress: 'olive.cat@gmail.com'
-                }
+                    "_id" : ObjectId("xxxxxxxxxxxxxxxx"),
+                    "FirstName" : "Olive",
+                    "LastName" : "Cat",
+                    "Username" : "meowmeow",
+                    "Email" : "olive.cat@gmail.com,
+                    "Password" : "catsrule",
+                    "Birthdate" : ISODate("2016-03-18T00:00:00Z")
+                    }
             </td>
         </tr>
         <tr>
@@ -93,12 +95,13 @@
             <td>A JSON object holding data about the updated user information
                 <br>
                 Example: {
-                firstName: 'Olive',
-                lastName: 'Cat'
-                username: 'olivecat',
-                password: 'meowmeow',
-                emailAddress: 'olive.cat@gmail.com'
-                }
+                    "FirstName": "Olive",
+                    "LastName": "Cat",
+                    "Username": "olivecat",
+                    "Password": "meowmeow",
+                    "Email": "olive.cat@gmail.com",
+                    "Birthdate": "2016-03-18"
+                    }
             </td>
             <td>A text message indicating the user information was updated
                 <br>
@@ -112,10 +115,21 @@
             <td>A JSON object holding data about a single movie, containing the title, genre, director and release year. 
                 <br>
                 Example: {
-                title: 'Parasite',
-                genre: ['Drama', 'Mystery & Thriller', 'Comedy'],
-                director: 'Bong Joon-ho',
-                releaseYear: 2019
+                "_id" : ObjectId("6182de309c3e0b19943474dc"),
+                "Title" : "Us",
+                "Description" : "A family's serene beach vacation turns to chaos when their doppelgängers appear and begin to terrorize them.",
+                "Genre" : [
+                    ObjectId("6182ca219c3e0b19943474d0"),
+                    ObjectId("6182c9ea9c3e0b19943474cf")
+                    ],
+                "Director" : {
+                    "Name" : "Jordan Peele",
+                    "Bio" : "Jordan Haworth Peele is an American actor, comedian and filmmaker. He is best known for his film and television work in the comedy and horror genres.Jordan Haworth Peele attended Sarah Lawrence College as a member of the class of 2001. His mother is white and his father is black. Jordan is married to comedian Chelsea Peretti, with whom he has a son. He is known for co-writing and starring in the comedy Keanu (2016), opposite his close friend Keegan-Michael Key, for writing and directing the horror film Get Out (2017), which was nominated for Best Picture, lead Actor, Screenplay (winning the prize), and Director at the Academy Awards, and for writing-directing-plus duties on Us (2019), a horror film that had one of the highest live action non-franchise openings of all time.",
+                    "Birthdate" : ISODate("1979-02-21T00:00:00Z")
+                    },
+                "ImagePath" : "https://m.media-amazon.com/images/M/MV5BZTliNWJhM2YtNDc1MC00YTk1LWE2MGYtZmE4M2Y5ODdlNzQzXkEyXkFqcGdeQXVyMzY0MTE3NzU@._V1_.jpg",
+                "Featured" : true,
+                "ReleaseYear" : 2019
                 }
             </td>
             <td>A text message indicating the user successfully added a new movie to their favourites
