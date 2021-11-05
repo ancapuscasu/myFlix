@@ -3,6 +3,7 @@ const express = require ('express'),
 morgan = require('morgan'),
 mongoose = require('mongoose'),
 Models = require('./models.js');
+const { repeat } = require('lodash');
 
 
 const app = express();
@@ -13,74 +14,11 @@ const Users = Models.User;
 mongoose.connect('mongodb://localhost:27017/myFlixDB', { useNewUrlParser: true, useUnifiedTopology: true});
 
 app.use(express.json()); // Parse JSON bodies
-app.use(express.urlencoded()); // Parse URL-encoded bodies
+app.use(express.urlencoded({ extended: true })); // Parse URL-encoded bodies
 app.use(morgan('common')); //middleware for logging site use
 app.use(express.static('public')); // middleware for serving static files
 
 
-// created topMovies list
-// let topMovies = [
-//     {
-//         title: 'Parasite',
-//         genre: ['Thriller'],
-//         director: 'Bong Joon-ho',
-//         releaseYear: 2019
-//     },
-//     {
-//         title: 'Us',
-//         genre: ['Horror'],
-//         director: 'Jordan Peele',
-//         releaseYear: 2019
-//     },
-//     {
-//         title: 'Blackkklansman',
-//         genre: ['Drama'],
-//         director: 'Spike Lee',
-//         releaseYear: 2018
-//     },
-//     {
-//         title: 'Get Out',
-//         genre: ['Thriller'],
-//         director: 'Jordan Peele',
-//         releaseYear: 2017
-//     },
-//     {
-//         title: 'American Psycho',
-//         genre: ['Horror'],
-//         director: 'Mary Harron',
-//         releaseYear: 2000
-//     },
-//     {
-//         title: 'Burning',
-//         genre: ['Drama'],
-//         director: 'Lee Chang-dong',
-//         releaseYear: 2018
-//     },
-//     {
-//         title: 'Baby Driver',
-//         genre: ['Action'],
-//         director: 'Edgar Wright',
-//         releaseYear: 2017
-//     },
-//     {
-//         title: 'Hidden Figures',
-//         genre: ['History'],
-//         director: 'Theodore Melfi',
-//         releaseYear: 2017
-//     },
-//     {
-//         title: 'Taxi Driver',
-//         genre: ['Drama'],
-//         director: 'Martin Scorsese',
-//         releaseYear: 1976
-//     },
-//     {
-//         title: 'Midnight in Paris',
-//         genre: ['Fantasy'],
-//         director: 'Woody Allen',
-//         releaseYear: 2011
-//     }
-// ];
 
 //Return the home page of myFlix App
 app.get('/', (req, res) =>{
@@ -89,7 +27,14 @@ app.get('/', (req, res) =>{
 
 // Return a list of ALL movies to the user
 app.get('/movies', (req, res) => {
-    res.json(topMovies);
+    Movies.find()
+        .then((movies) => {
+            res.status(201).json(movies);
+        })
+        .catch((err) => {
+            console.error(err);
+            res.status(500).send('Error: ' + err);
+        });
 });
 
 
@@ -111,6 +56,32 @@ app.get('/movies/directors/:name', (req, res) => {
 });
 
 
+
+//Return a list of all Users 
+app.get('/users', (req, res) => {
+    Users.find()
+        .then((users) => {
+            res.status(201).json(users);
+        })
+        .catch((err) => {
+            console.error(err);
+            res.status(500).send('Error: ' + err);
+        });
+});
+
+//Return a User by Username
+app.get('/users/:Username', (req,res) => {
+    Users.findOne({ Username: req.params.Username})
+        .then((user) => {
+            res.json(user);
+        })
+        .catch((err) => {
+            console.error(err);
+            res.status(500).send('Error: ' + err);
+        });
+});
+
+
 //Allow new users to register
 /* Expect a JSON object in this format:
     {
@@ -122,11 +93,11 @@ app.get('/movies/directors/:name', (req, res) => {
         Birthdate: Date
     }
 */
-app.post('/newUser', (req, res) => {
+app.post('/users', (req, res) => {
     Users.findOne({ Username: req.body.Username})
         .then ((user) => {
             if (user) {
-                return res.status(400).send(req.body.username + "already exists");
+                return res.status(400).send(req.body.Username + " already exists");
             } else {
                 Users
                     .create({
@@ -154,24 +125,76 @@ app.post('/newUser', (req, res) => {
 
 
 
-//Allow users to update their user info (username)
-app.put('/newUser/:id/info', (req, res) => {
-    res.send('Successful PUT request - user info is updated');
+//Allow users to update their User Info by Username
+app.put('/users/:Username', (req, res) => {
+    Users.findOneAndUpdate({ Username: req.params.Username},
+        {$set: {
+            FirstName: req.body.FirstName,
+            LastName: req.body.LastName,
+            Username: req.body.Username,
+            Email: req.body.Email,
+            Password: req.body.Password,
+            Birthdate: req.body.Birthdate
+        }
+    },
+    { new: true },
+    (err, updatedUser) => {
+        if (err) {
+            console.error(err);
+            res.status(500).send('Error: ' + err);
+        } else {
+            res.json(updatedUser);
+        }
+    });
 });
 
+
 //Allow users to add a movie to their list of favorites 
-app.post('/newUser/:id/favourites', (req, res) => {
-    res.send('Successful POST request - user added a movie to their favourites');
+app.post('/users/:Username/movies/:MovieID', (req, res) => {
+    Users.findOneAndUpdate({ Username: req.params.Username},
+        {$addToSet: { FavouriteMovies: req.params.MovieID}
+    },
+    { new: true},
+    (err, updatedUser) => {
+        if (err) {
+            console.error(err);
+            res.status(500).send('Error: ' + err);
+        } else {
+            res.json(updatedUser);
+        }
+    });
 });
 
 //Allow users to remove a movie from their list of favorites 
-app.delete('/newUser/:id/favourites', (req, res) => {
-    res.send('Successful DELETE request - user removed movie from favourites');
+app.delete('/users/:Username/movies/:MovieID', (req, res) => {
+    Users.findOneAndUpdate({ Username: req.params.Username},
+        {$pull: { FavouriteMovies: req.params.MovieID}
+    },
+    { new: true},
+    (err, updatedUser) => {
+        if (err) {
+            console.error(err);
+            res.status(500).send('Error: ' + err);
+        } else {
+            res.json(updatedUser);
+        }
+    });
 });
 
-//Allow existing users to deregister 
-app.delete('/newUser', (req, res) => {
-    res.send('Successful DELETE request - user has deregistered');
+//Delete a user by Username
+app.delete('/users/:Username', (req, res) => {
+    Users.findOneAndRemove({ Username: req.params.Username})
+        .then((user) => {
+            if (!user) {
+                res.status(400).send(req.params.Username + " was not found.");
+            } else {
+                res.status(200).send(req.params.Username + " was deleted.");
+            }
+        })
+        .catch ((err) => {
+            console.error(err);
+            res.status(500).send('Error: ' + err);
+        });
 });
  
 
