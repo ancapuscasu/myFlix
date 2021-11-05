@@ -1,76 +1,86 @@
 //imported <express> and <morgan>
 const express = require ('express'),
-morgan = require('morgan');
+morgan = require('morgan'),
+mongoose = require('mongoose'),
+Models = require('./models.js');
+
 
 const app = express();
+const Movies = Models.Movie;
+const Genres = Models.Genre;
+const Users = Models.User;
 
+mongoose.connect('mongodb://localhost:27017/myFlixDB', { useNewUrlParser: true, useUnifiedTopology: true});
+
+app.use(express.json()); // Parse JSON bodies
+app.use(express.urlencoded()); // Parse URL-encoded bodies
 app.use(morgan('common')); //middleware for logging site use
 app.use(express.static('public')); // middleware for serving static files
 
 
 // created topMovies list
-let topMovies = [
-    {
-        title: 'Parasite',
-        genre: ['Drama', 'Mystery & Thriller', 'Comedy'],
-        director: 'Bong Joon-ho',
-        releaseYear: 2019
-    },
-    {
-        title: 'Us',
-        genre: ['Horror', 'Mystery & Thriller'],
-        director: 'Jordan Peele',
-        releaseYear: 2019
-    },
-    {
-        title: 'Blackkklansman',
-        genre: ['Drama', 'Crime', 'Comedy'],
-        director: 'Spike Lee',
-        releaseYear: 2018
-    },
-    {
-        title: 'Get Out',
-        genre: ['Horror', 'Comedy', 'Mystery & Thriller'],
-        director: 'Jordan Peele',
-        releaseYear: 2017
-    },
-    {
-        title: 'American Psycho',
-        genre: ['Horror', 'Comedy'],
-        director: 'Mary Harron',
-        releaseYear: 2000
-    },
-    {
-        title: 'Burning',
-        genre: ['Drama', 'Mystery & Thriller'],
-        director: 'Lee Chang-dong',
-        releaseYear: 2018
-    },
-    {
-        title: 'Baby Driver',
-        genre: ['Action', 'Mystery & Thriller'],
-        director: 'Edgar Wright',
-        releaseYear: 2017
-    },
-    {
-        title: 'Hidden Figures',
-        genre: ['Drama', 'History'],
-        director: 'Theodore Melfi',
-        releaseYear: 2017
-    },
-    {
-        title: 'Taxi Driver',
-        genre: ['Drama'],
-        director: 'Martin Scorsese',
-        releaseYear: 1976
-    },
-    {
-        title: 'Midnight in Paris',
-        genre: ['Fantasy', 'Romance'],
-        director: 'Woody Allen',
-        releaseYear: 2011
-    }
-];
+// let topMovies = [
+//     {
+//         title: 'Parasite',
+//         genre: ['Thriller'],
+//         director: 'Bong Joon-ho',
+//         releaseYear: 2019
+//     },
+//     {
+//         title: 'Us',
+//         genre: ['Horror'],
+//         director: 'Jordan Peele',
+//         releaseYear: 2019
+//     },
+//     {
+//         title: 'Blackkklansman',
+//         genre: ['Drama'],
+//         director: 'Spike Lee',
+//         releaseYear: 2018
+//     },
+//     {
+//         title: 'Get Out',
+//         genre: ['Thriller'],
+//         director: 'Jordan Peele',
+//         releaseYear: 2017
+//     },
+//     {
+//         title: 'American Psycho',
+//         genre: ['Horror'],
+//         director: 'Mary Harron',
+//         releaseYear: 2000
+//     },
+//     {
+//         title: 'Burning',
+//         genre: ['Drama'],
+//         director: 'Lee Chang-dong',
+//         releaseYear: 2018
+//     },
+//     {
+//         title: 'Baby Driver',
+//         genre: ['Action'],
+//         director: 'Edgar Wright',
+//         releaseYear: 2017
+//     },
+//     {
+//         title: 'Hidden Figures',
+//         genre: ['History'],
+//         director: 'Theodore Melfi',
+//         releaseYear: 2017
+//     },
+//     {
+//         title: 'Taxi Driver',
+//         genre: ['Drama'],
+//         director: 'Martin Scorsese',
+//         releaseYear: 1976
+//     },
+//     {
+//         title: 'Midnight in Paris',
+//         genre: ['Fantasy'],
+//         director: 'Woody Allen',
+//         releaseYear: 2011
+//     }
+// ];
 
 //Return the home page of myFlix App
 app.get('/', (req, res) =>{
@@ -100,10 +110,49 @@ app.get('/movies/directors/:name', (req, res) => {
     res.send('Successful GET request returning data about a director.');
 });
 
+
 //Allow new users to register
+/* Expect a JSON object in this format:
+    {
+        FirstName: {type: String, required: true},
+        LastName: {type: String, required: true},
+        Username: {type: String, required: true},
+        Email: {type: String, required: true},
+        Password: {type: String, required: true},
+        Birthdate: Date
+    }
+*/
 app.post('/newUser', (req, res) => {
-    res.send('Successful POST request - new user is registered');
+    Users.findOne({ Username: req.body.Username})
+        .then ((user) => {
+            if (user) {
+                return res.status(400).send(req.body.username + "already exists");
+            } else {
+                Users
+                    .create({
+                        FirstName: req.body.FirstName,
+                        LastName: req.body.LastName,
+                        Username: req.body.Username,
+                        Email: req.body.Email,
+                        Password: req.body.Password,
+                        Birthdate: req.body.Birthdate
+                    })
+                    .then((user) => {
+                        res.status(201).json(user) })
+                    .catch((err) => {
+                        console.error(err);
+                        res.status(500).send('Error: ' + err);
+                    })
+                }
+        })
+        .catch((err) => {
+            console.error(err);
+            res.status(500).send('Error: ' + err);
+        });
+        
 });
+
+
 
 //Allow users to update their user info (username)
 app.put('/newUser/:id/info', (req, res) => {
@@ -138,3 +187,7 @@ app.use((err, req, res, next) => {
     res.status(500).send('Something broke!');
   });
 
+
+
+
+  
