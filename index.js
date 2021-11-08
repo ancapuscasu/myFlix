@@ -150,6 +150,16 @@ app.post('/users', (req, res) => {
 
 
 //Allow users to update their User Info by Username
+/* Expect a JSON object with one or more fields updated:
+    {
+        FirstName: {type: String, required: true},
+        LastName: {type: String, required: true},
+        Username: {type: String, required: true},
+        Email: {type: String, required: true},
+        Password: {type: String, required: true},
+        Birthdate: Date
+    }
+*/
 app.put('/users/:Username', (req, res) => {
     Users.findOneAndUpdate({ Username: req.params.Username},
         {$set: {
