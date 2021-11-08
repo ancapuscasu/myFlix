@@ -12,11 +12,18 @@
 
     <table>
         <tr>
-            <th>BUSINESS LOGIC</th>
+            <th>REQUEST</th>
             <th>URL</th>
             <th>HTTP METHDOD</th>
             <th>REQUEST BODY DATA FORMAT</th>
             <th>RESPONSE BODY DATA FORMAT</th>
+        </tr>
+        <tr>
+            <td>Return the home page of myFlix App</td>
+            <td>/</td>
+            <td>GET</td>
+            <td>None</td>
+            <td>Message saying 'Welcome to myFlix App'</td>
         </tr>
         <tr>
             <td>Return a list of ALL movies to the user</td>
@@ -26,133 +33,187 @@
             <td>A JSON array holding data about all movies</td>
         </tr>
         <tr>
-            <td>Return data (description, genre, director, image URL, whether it’s featured or not) about a single movie by title to the user</td>
-            <td>/movies/:title</td>
+            <td>Return data about a single movie by title to the user</td>
+            <td>/movies/:Title</td>
             <td>GET</td>
             <td>None</td>
-            <td>A JSON object holding data about a single movie, containing the title, genre, director and release year. 
+            <td>A JSON object holding data about a single movie, containing the title, description, genre, director, image URL, whether it's featured or not and the release year. 
                 <br>
-                Example: {
-                title: 'Parasite',
-                genre: ['Drama', 'Mystery & Thriller', 'Comedy'],
-                director: 'Bong Joon-ho',
-                releaseYear: 2019
+                Example: 
+                <br><code>
+                    {
+                        "Director": {
+                            "Name": "Bong Joon Ho",
+                            "Bio": "Bong Joon-ho is a South Korean film director, producer and screenwriter. The recipient of three Academy Awards, his filmography is characterised by emphasis on social themes, genre-mixing, black humor, and sudden tone shifts.",
+                            "Birthdate": "1969-09-14T00:00:00.000Z"
+                        },
+                        "_id": "6182ce339c3e0b19943474da",
+                        "Title": "Parasite",
+                        "Description": "Greed and class discrimination threaten the newly formed symbiotic relationship between the wealthy Park family and the destitute Kim clan.",
+                        "Genre": [
+                            "6182c9ea9c3e0b19943474cf",
+                            "6182ca569c3e0b19943474d1",
+                            "6182cbe29c3e0b19943474d6"
+                        ],
+                        "ImagePath": "https://m.media-amazon.com/images/M/MV5BYWZjMjk3ZTItODQ2ZC00NTY5LWE0ZDYtZTI3MjcwN2Q5NTVkXkEyXkFqcGdeQXVyODk4OTc3MTY@._V1_.jpg",
+                        "Featured": true,
+                        "ReleaseYear": 2019
+                    }
                 }
+                </code>
             </td>
         </tr>
         <tr>
-            <td>Return data about a genre (description) by name/title (e.g., “Thriller”)</td>
-            <td>/movies/:title/genre</td>
+            <td>Return data about a genre by name</td>
+            <td>/genres/:Name</td>
             <td>GET</td>
             <td>None</td>
-            <td>A text message indicating the genre(s) of a single movie 
+            <td>A JSON object holding data about a single genre 
                 <br>
-                Example: "Parasite is a Drama, Mystery & Thriller and Comedy."
+                Example:
+                <br><code>
+                {
+                    "_id": "6182c9ea9c3e0b19943474cf",
+                    "Name": "Thriller",
+                    "Description": "A thriller story is mostly about the emotional purpose, which is to elicit strong emotions, mostly dealing with generating suspense and anxiety. No matter what the specific plot, the best thrillers get your heart racing."
+                }
+                </code>
             </td>
         </tr>
         <tr>
-            <td>Return data about a director (bio, birth year, death year) by name</td>
-            <td>/movies/directors/:name</td>
+            <td>Return data about a director by name</td>
+            <td>/movies/director/:Name</td>
             <td>GET</td>
             <td>None</td>
-            <td>A text message indicating data about a director
+            <td>A JSON object holding the Name, Bio and Birthdate of a director
                 <br>
-                Example: "Bong Joon-ho was born on September 14, 1969 in Daegu, South Korea. He is a writer and producer, known for Snowpiercer (2013), Okja (2017) and Parasite (2019).""
+                Example:
+                <br><code>
+                    {
+                        "Name": "Jordan Peele",
+                        "Bio": "Jordan Haworth Peele is an American actor, comedian and filmmaker. He is best known for his film and television work in the comedy and horror genres.Jordan Haworth Peele attended Sarah Lawrence College as a member of the class of 2001. His mother is white and his father is black. Jordan is married to comedian Chelsea Peretti, with whom he has a son. He is known for co-writing and starring in the comedy Keanu (2016), opposite his close friend Keegan-Michael Key, for writing and directing the horror film Get Out (2017), which was nominated for Best Picture, lead Actor, Screenplay (winning the prize), and Director at the Academy Awards, and for writing-directing-plus duties on Us (2019), a horror film that had one of the highest live action non-franchise openings of all time.",
+                        "Birthdate": "1979-02-21T00:00:00.000Z"
+                    } 
+                </code>
             </td>
         </tr>
         <tr>
             <td>Allow new users to register</td>
-            <td>/newUser</td>
+            <td>/users</td>
             <td>POST</td>
             <td>A JSON object holding data about the new user
                 <br>
-                Example: {
-                    "FirstName": "Olive",
-                    "LastName": "Cat",
-                    "Username": "meowmeow",
-                    "Email": "olive.cat@gmail.com",
-                    "Password": "catsrule",
-                    "Birthdate": "2016-03-18"
+                Example: 
+                <br><code>
+                    {
+                        "FirstName": "Olive",
+                        "LastName": "Cat",
+                        "Username": "meowmeow",
+                        "Email": "olive.cat@gmail.com",
+                        "Password": "catsrule",
+                        "Birthdate": "2016-03-18"
                     }
+                </code>
             </td>
             <td>A JSON object holding data about the new user, with an id
                 <br>
-                Example: {
-                    "_id" : ObjectId("xxxxxxxxxxxxxxxx"),
-                    "FirstName" : "Olive",
-                    "LastName" : "Cat",
-                    "Username" : "meowmeow",
-                    "Email" : "olive.cat@gmail.com,
-                    "Password" : "catsrule",
-                    "Birthdate" : ISODate("2016-03-18T00:00:00Z")
+                Example: 
+                <br><code>
+                    {
+                        "_id" : ObjectId("xxxxxxxxxxxxxxxx"),
+                        "FirstName" : "Olive",
+                        "LastName" : "Cat",
+                        "Username" : "meowmeow",
+                        "Email" : "olive.cat@gmail.com,
+                        "Password" : "catsrule",
+                        "Birthdate" : ISODate("2016-03-18T00:00:00Z")
                     }
+                </code>
             </td>
         </tr>
         <tr>
-            <td>Allow users to update their user info (username)</td>
-            <td>/newUser/:id/info</td>
+            <td>Allow users to update their user info</td>
+            <td>/users/:Username</td>
             <td>PUT</td>
-            <td>A JSON object holding data about the updated user information
+            <td>A JSON object holding data the user wishes to update with at least one of the following fields: FirstName, LastName, Username, Email, Password, Birthdate.
                 <br>
-                Example: {
-                    "FirstName": "Olive",
-                    "LastName": "Cat",
-                    "Username": "olivecat",
-                    "Password": "meowmeow",
-                    "Email": "olive.cat@gmail.com",
-                    "Birthdate": "2016-03-18"
+                Example: 
+                <br><code>
+                    {
+                        "FirstName" : "Olivia",
+                        "Password" : "secretpassword"
                     }
+                </code>
             </td>
-            <td>A text message indicating the user information was updated
+            <td>A JSON object holding the user's updated data.
                 <br>
-                Example: "Your username and password were successfuly updated."
+                Example: 
+                <br><code>
+                    {
+                        "FirstName" : "Olivia",
+                        "LastName" : "Cat",
+                        "Username" : "meowmeow",
+                        "Email" : "olive.cat@gmail.com,
+                        "Password" : "secretpassword",
+                        "Birthdate" : ISODate("2016-03-18T00:00:00Z")
+                    }
+                </code>
             </td>
         </tr>
         <tr>
             <td>Allow users to add a movie to their list of favorites</td>
-            <td>/newUser/:id/favourites</td>
+            <td>/users/:Username/movies/:MovieID</td>
             <td>POST</td>
-            <td>A JSON object holding data about a single movie, containing the title, genre, director and release year. 
+            <td>None</td>
+            <td>A JSON object holding data about a user with an updated FavouriteMovies list
                 <br>
-                Example: {
-                "_id" : ObjectId("6182de309c3e0b19943474dc"),
-                "Title" : "Us",
-                "Description" : "A family's serene beach vacation turns to chaos when their doppelgängers appear and begin to terrorize them.",
-                "Genre" : [
-                    ObjectId("6182ca219c3e0b19943474d0"),
-                    ObjectId("6182c9ea9c3e0b19943474cf")
-                    ],
-                "Director" : {
-                    "Name" : "Jordan Peele",
-                    "Bio" : "Jordan Haworth Peele is an American actor, comedian and filmmaker. He is best known for his film and television work in the comedy and horror genres.Jordan Haworth Peele attended Sarah Lawrence College as a member of the class of 2001. His mother is white and his father is black. Jordan is married to comedian Chelsea Peretti, with whom he has a son. He is known for co-writing and starring in the comedy Keanu (2016), opposite his close friend Keegan-Michael Key, for writing and directing the horror film Get Out (2017), which was nominated for Best Picture, lead Actor, Screenplay (winning the prize), and Director at the Academy Awards, and for writing-directing-plus duties on Us (2019), a horror film that had one of the highest live action non-franchise openings of all time.",
-                    "Birthdate" : ISODate("1979-02-21T00:00:00Z")
-                    },
-                "ImagePath" : "https://m.media-amazon.com/images/M/MV5BZTliNWJhM2YtNDc1MC00YTk1LWE2MGYtZmE4M2Y5ODdlNzQzXkEyXkFqcGdeQXVyMzY0MTE3NzU@._V1_.jpg",
-                "Featured" : true,
-                "ReleaseYear" : 2019
-                }
-            </td>
-            <td>A text message indicating the user successfully added a new movie to their favourites
-                <br>
-                Example: "Shrek II was successfully added to your favourites."
+                Example: 
+                <br><code>
+                    {
+                        "_id": "618586c5ec86a4a75b2169a6",
+                        "FirstName": "Valentino",
+                        "LastName": "Morose",
+                        "Username": "valmor",
+                        "Email": "valentino.morose@gmail.com",
+                        "Password": "Secret Password",
+                        "Birthdate": "2004-04-05T00:00:00.000Z",
+                        "FavouriteMovies": [
+                            "6182de309c3e0b19943474dc"
+                        ],
+                        "__v": 0
+                    }
+                </code>
             </td>
         </tr>
         <tr>
             <td>Allow users to remove a movie from their list of favorites</td>
-            <td>/newUser/:id/favourites</td>
+            <td>/users/:Username/movies/:MovieID</td>
             <td>DELETE</td>
             <td>None</td>
-            <td>A text message indicating the user successfully removed a movie from their favourites
+            <td>A JSON object holding data about a user with an updated FavouriteMovies list
                 <br>
-                Example: "Shrek II was successfully removed from your favourites."
+                Example:
+                <br><code> 
+                    {
+                        "_id": "618586c5ec86a4a75b2169a6",
+                        "FirstName": "Valentino",
+                        "LastName": "Morose",
+                        "Username": "valmor",
+                        "Email": "valentino.morose@gmail.com",
+                        "Password": "Secret Password",
+                        "Birthdate": "2004-04-05T00:00:00.000Z",
+                        "FavouriteMovies": [],
+                        "__v": 0
+                    }
+                </code>
             </td>
         </tr>
         <tr>
             <td>Allow existing users to deregister</td>
-            <td>/newUser</td>
+            <td>/users</td>
             <td>DELETE</td>
             <td>None</td>
-            <td>A text message indicating the user successfully removed a movie from their favourites
+            <td>A text message indicating the user successfully deregistered.
                 <br>
                 Example: "Your account was successfully deleted."
             </tr>
