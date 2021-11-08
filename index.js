@@ -25,6 +25,7 @@ app.get('/', (req, res) =>{
     res.send('Welcome to myFlix App');
 })
 
+
 // Return a list of ALL movies to the user
 app.get('/movies', (req, res) => {
     Movies.find()
@@ -38,21 +39,44 @@ app.get('/movies', (req, res) => {
 });
 
 
-// Return data (description, genre, director, image URL, whether it’s featured or not) about a single movie by title to the user
-app.get('/movies/:title', (req, res) => {
-    res.json(topMovies.find( (movie) => {
-        return movie.title === req.params.title 
-    }));
+
+// Return data about a single movie by title to the user
+app.get('/movies/:Title', (req, res) => {
+   Movies.findOne({ Title: req.params.Title})
+    .then ((movie) => {
+        res.json(movie);
+    })
+    .catch ((err) => {
+        console.error(err);
+        res.status(500).send('Error: ' + err);
+    });
 });
 
-//Return data about a genre (description) by name/title (e.g., “Thriller”)
-app.get('/movies/:title/genre', (req, res) => {
-    res.send('Successful GET request returning data about a genre.');
+
+
+//Return data about a genre by name/title.
+app.get('/genres/:Name', (req, res) => {
+    Genres.findOne({ Name: req.params.Name})
+        .then((genre) => {
+            res.json(genre);
+        })
+        .catch ((err) => {
+            console.error(err);
+            res.status(500).send("Error: " + err);
+        });
 });
 
-//Return data about a director (bio, birth year, death year) by name
-app.get('/movies/directors/:name', (req, res) => {
-    res.send('Successful GET request returning data about a director.');
+
+//Return data about a director by name
+app.get('/movies/director/:Name', (req, res) => {
+    Movies.findOne({"Director.Name": req.params.Name})
+        .then((movies) => {
+            res.json(movies.Director);
+        })
+        .catch((err) => {
+            console.error(err);
+            res.status(500).send('Error: ' + err);
+        });
 });
 
 
