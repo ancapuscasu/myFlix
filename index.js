@@ -1,12 +1,12 @@
-//imported <express> and <morgan>
+//Import <express>, <morgan>, <mongoose>, <./models.js>, <lodash>
 const express = require ('express'),
 morgan = require('morgan'),
 mongoose = require('mongoose'),
 Models = require('./models.js');
-const { repeat } = require('lodash');
 
 
 const app = express();
+
 const Movies = Models.Movie;
 const Genres = Models.Genre;
 const Users = Models.User;
@@ -19,6 +19,14 @@ app.use(morgan('common')); //middleware for logging site use
 app.use(express.static('public')); // middleware for serving static files
 
 
+//Import <./auth.js> file
+let auth = require('./auth')(app);
+
+//Import <passport> module and <passport.js> file
+const passport = require('passport');
+require('./passport');
+
+
 
 //Return the home page of myFlix App
 app.get('/', (req, res) =>{
@@ -27,7 +35,7 @@ app.get('/', (req, res) =>{
 
 
 // Return a list of ALL movies to the user
-app.get('/movies', (req, res) => {
+app.get('/movies', passport.authenticate("jwt", { session: false }), (req, res) => {
     Movies.find()
         .then((movies) => {
             res.status(201).json(movies);
