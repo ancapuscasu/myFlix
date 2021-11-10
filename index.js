@@ -145,10 +145,11 @@ app.get('/users/:Username', passport.authenticate("jwt", { session: false }), (r
     }
 */
 app.post('/users', (req, res) => {
-    Users.findOne({ Username: req.body.Username})
+    let hashedPassword = Users.hashPassword(req.body.Password);
+    Users.findOne({ Username: req.body.Username}) // Search to see if a user with the requested username already exists.
         .then ((user) => {
             if (user) {
-                return res.status(400).send(req.body.Username + " already exists");
+                return res.status(400).send(req.body.Username + " already exists"); //If user is found, send a response that " USER " already exists.
             } else {
                 Users
                     .create({
@@ -156,7 +157,7 @@ app.post('/users', (req, res) => {
                         LastName: req.body.LastName,
                         Username: req.body.Username,
                         Email: req.body.Email,
-                        Password: req.body.Password,
+                        Password: hashedPassword,
                         Birthdate: req.body.Birthdate
                     })
                     .then((user) => {
@@ -164,7 +165,7 @@ app.post('/users', (req, res) => {
                     .catch((err) => {
                         console.error(err);
                         res.status(500).send('Error: ' + err);
-                    })
+                    });
                 }
         })
         .catch((err) => {
