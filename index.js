@@ -21,15 +21,27 @@ app.use(express.urlencoded({ extended: true })); // Parse URL-encoded bodies
 app.use(morgan('common')); //middleware for logging site use
 app.use(express.static('public')); // middleware for serving static files
 
-//Import <cors>
+
+//Import <cors> - Middleware for controlling which domains have access
 const cors = require('cors');
-app.use(cors()); // Middleware for controlling which domains have access
+
+//list of allowed domains
+let allowedOrigins = ['http://localhost:8080', 'http://testsite.com'];
+
+//function to check domains - allows listed domains, else returns error 
+app.use(cors({
+    origin: (origin, callback) => {
+        if(!origin) return callback(null, true);
+        if(allowedOrigins.indexOf(origin) === -1){
+            let message = `The CORS policy for this application doesn't allow access from origin ` + origin;
+            return callback (new Error(message), false);
+        }
+        return callback(null, true);
+    }
+})); 
 
 
-// //Import <./auth.js> file
-// let auth = require('./auth')(app);
-
-//Import <passport> module and <passport.js> file
+//Import <passport> module, <passport.js> and <auth.js> files
 const passport = require('passport');
 require('./passport');
 require('./auth')(app);
