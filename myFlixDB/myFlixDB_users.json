@@ -1,0 +1,2 @@
+{"_id":{"$oid":"618c5c2b1628ab814a49aacc"},"FirstName":"Erick","LastName":"Erickson","Username":"iamerick","Email":"erickerick@gmail.com","Password":"$2b$10$QEXe2oU1zMvbL.P029cReehvjVnRxOZGufvKN6UtuCw1zP.6KX4DW","Birthdate":{"$date":"1978-04-01T00:00:00Z"},"FavouriteMovies":[],"__v":0}
+{"_id":{"$oid":"618c61a7a414a4b5f49b0d67"},"FirstName":"Alan","LastName":"Fresco","Username":"afresco","Email":"alanfresco@gmail.com","Password":"$2b$10$tDrEGGFZqzti1oVyiG5vRO5riwC4WNHwHNg8q9lnAm3wrA9aaoUxW","Birthdate":{"$date":"1978-04-01T00:00:00Z"},"FavouriteMovies":[],"__v":0}
