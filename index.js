@@ -18,10 +18,10 @@ const Users = Models.User;
 // });
 
 //CONNECT to online database
-// mongoose.connect(process.env.CONNECTION_URI, { 
-//     useNewUrlParser: true, 
-//     useUnifiedTopology: true
-// });
+mongoose.connect(process.env.CONNECTION_URI, { 
+    useNewUrlParser: true, 
+    useUnifiedTopology: true
+});
 
 app.use(express.json()); // Parse JSON bodies
 app.use(express.urlencoded({ extended: true })); // Parse URL-encoded bodies
