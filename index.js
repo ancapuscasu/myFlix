@@ -11,10 +11,17 @@ const Movies = Models.Movie;
 const Genres = Models.Genre;
 const Users = Models.User;
 
-mongoose.connect('mongodb://localhost:27017/myFlixDB', { 
-    useNewUrlParser: true, 
-    useUnifiedTopology: true
-});
+//CONNECT to local database
+// mongoose.connect('mongodb://localhost:27017/myFlixDB', { 
+//     useNewUrlParser: true, 
+//     useUnifiedTopology: true
+// });
+
+//CONNECT to online database
+// mongoose.connect(process.env.CONNECTION_URI, { 
+//     useNewUrlParser: true, 
+//     useUnifiedTopology: true
+// });
 
 app.use(express.json()); // Parse JSON bodies
 app.use(express.urlencoded({ extended: true })); // Parse URL-encoded bodies
