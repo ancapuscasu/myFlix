@@ -78,11 +78,24 @@ app.get('/movies/:Title', passport.authenticate("jwt", { session: false }), (req
 
 
 
+// //Return data about a genre by name/title.
+// app.get('/genres/:Name', passport.authenticate("jwt", { session: false }), (req, res) => {
+//     Genres.findOne({ Name: req.params.Name})
+//         .then((genre) => {
+//             res.json(genre);
+//         })
+//         .catch ((err) => {
+//             console.error(err);
+//             res.status(500).send("Error: " + err);
+//         });
+// });
+
+
 //Return data about a genre by name/title.
-app.get('/genres/:Name', passport.authenticate("jwt", { session: false }), (req, res) => {
-    Genres.findOne({ Name: req.params.Name})
-        .then((genre) => {
-            res.json(genre);
+app.get('/genres', passport.authenticate("jwt", { session: false }), (req, res) => {
+    Genres.find()
+        .then((genres) => {
+            res.status(201).json(genres);
         })
         .catch ((err) => {
             console.error(err);
