@@ -215,9 +215,9 @@ app.post('/users',
 */
 app.put('/users/:Username', 
     [
-        check ('Username', 'Username can only contain letter and numbers - no special characters allowed').isAlphanumeric(),
-        check ('Username', 'Username must be 5 characters long').isLength({min: 5}),
-        check ('Password', 'Password must be at least 8 characters long').isLength({min: 8}),
+        // check ('Username', 'Username can only contain letter and numbers - no special characters allowed').isAlphanumeric(),
+        // check ('Username', 'Username must be 5 characters long').isLength({min: 5}),
+        // check ('Password', 'Password must be at least 8 characters long').isLength({min: 8}),
     ], passport.authenticate("jwt", { session: false }), (req, res) => {
 
         let errors = validationResult(req);
