@@ -25,9 +25,9 @@ let genreSchema = mongoose.Schema({
 let userSchema = mongoose.Schema({
   FirstName: {type: String, required: true},
   LastName: {type: String, required: true},
-  Username: {type: String, required: true},
-  Email: {type: String, required: true},
-  Password: {type: String, required: true},
+  Username: {type: String, required: true, minlength: 5, maxlenght: 15},
+  Email: {type: String, required: true, match: /.+\@.+\..+/,unique: true },
+  Password: {type: String, required: true, minlength: 8},
   Birthdate: Date,
   FavouriteMovies: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Movie'}]
 });
