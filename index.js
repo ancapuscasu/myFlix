@@ -248,7 +248,7 @@ app.put('/users/:Username',
         });
 });
 
-app.put('/users/:UserID', 
+app.put('/user/:UserID', 
     [
         // check ('Username', 'Username can only contain letter and numbers - no special characters allowed').isAlphanumeric(),
         // check ('Username', 'Username must be 5 characters long').isLength({min: 5}),
