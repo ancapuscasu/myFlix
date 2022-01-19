@@ -131,8 +131,8 @@ app.get('/users', passport.authenticate("jwt", { session: false }), (req, res) =
 });
 
 //Return a User by Username
-app.get('/users/:Username', passport.authenticate("jwt", { session: false }), (req,res) => {
-    Users.findOne({ Username: req.params.Username})
+app.get('/users/:UserID', passport.authenticate("jwt", { session: false }), (req,res) => {
+    Users.findOne({ _id: req.params.UserID})
         .then((user) => {
             res.json(user);
         })
@@ -213,42 +213,42 @@ app.post('/users',
         Birthdate: Date
     }
 */
-app.put('/users/:Username', 
-    [
-        // check ('Username', 'Username can only contain letter and numbers - no special characters allowed').isAlphanumeric(),
-        // check ('Username', 'Username must be 5 characters long').isLength({min: 5}),
-        // check ('Password', 'Password must be at least 8 characters long').isLength({min: 8}),
-    ], passport.authenticate("jwt", { session: false }), (req, res) => {
+// app.put('/users/:Username', 
+//     [
+//         // check ('Username', 'Username can only contain letter and numbers - no special characters allowed').isAlphanumeric(),
+//         // check ('Username', 'Username must be 5 characters long').isLength({min: 5}),
+//         // check ('Password', 'Password must be at least 8 characters long').isLength({min: 8}),
+//     ], passport.authenticate("jwt", { session: false }), (req, res) => {
 
-        let errors = validationResult(req);
-        if (!errors.isEmpty()) {
-            return res.status(422).json({ errors: errors.array() });
-        }
+//         let errors = validationResult(req);
+//         if (!errors.isEmpty()) {
+//             return res.status(422).json({ errors: errors.array() });
+//         }
 
-        let hashedPassword = Users.hashPassword(req.body.Password);
+//         let hashedPassword = Users.hashPassword(req.body.Password);
 
-        Users.findOneAndUpdate({ Username: req.params.Username},
-            {$set: {
-                FirstName: req.body.FirstName,
-                LastName: req.body.LastName,
-                Username: req.body.Username,
-                Email: req.body.Email,
-                Password: hashedPassword,
-                Birthdate: req.body.Birthdate
-            }
-        },
-        { new: true },
-        (err, updatedUser) => {
-            if (err) {
-                console.error(err);
-                res.status(500).send('Error: ' + err);
-            } else {
-                res.json(updatedUser);
-            }
-        });
-});
+//         Users.findOneAndUpdate({ Username: req.params.Username},
+//             {$set: {
+//                 FirstName: req.body.FirstName,
+//                 LastName: req.body.LastName,
+//                 Username: req.body.Username,
+//                 Email: req.body.Email,
+//                 Password: hashedPassword,
+//                 Birthdate: req.body.Birthdate
+//             }
+//         },
+//         { new: true },
+//         (err, updatedUser) => {
+//             if (err) {
+//                 console.error(err);
+//                 res.status(500).send('Error: ' + err);
+//             } else {
+//                 res.json(updatedUser);
+//             }
+//         });
+// });
 
-app.put('/user/:UserID', 
+app.put('/users/:UserID', 
     [
         // check ('Username', 'Username can only contain letter and numbers - no special characters allowed').isAlphanumeric(),
         // check ('Username', 'Username must be 5 characters long').isLength({min: 5}),
@@ -285,8 +285,8 @@ app.put('/user/:UserID',
 
 
 //Allow users to add a movie to their list of favorites 
-app.post('/users/:Username/movies/:MovieID', passport.authenticate("jwt", { session: false }), (req, res) => {
-    Users.findOneAndUpdate({ Username: req.params.Username},
+app.post('/users/:UserID/movies/:MovieID', passport.authenticate("jwt", { session: false }), (req, res) => {
+    Users.findOneAndUpdate({ _id: req.params.UserID},
         {$addToSet: { FavouriteMovies: req.params.MovieID}
     },
     { new: true},
@@ -301,8 +301,8 @@ app.post('/users/:Username/movies/:MovieID', passport.authenticate("jwt", { sess
 });
 
 //Allow users to remove a movie from their list of favorites 
-app.delete('/users/:Username/movies/:MovieID', passport.authenticate("jwt", { session: false }), (req, res) => {
-    Users.findOneAndUpdate({ Username: req.params.Username},
+app.delete('/users/:UserID/movies/:MovieID', passport.authenticate("jwt", { session: false }), (req, res) => {
+    Users.findOneAndUpdate({ _id: req.params.UserID},
         {$pull: { FavouriteMovies: req.params.MovieID}
     },
     { new: true},
@@ -317,8 +317,8 @@ app.delete('/users/:Username/movies/:MovieID', passport.authenticate("jwt", { se
 });
 
 //Delete a user by Username
-app.delete('/users/:Username', passport.authenticate("jwt", { session: false }), (req, res) => {
-    Users.findOneAndRemove({ Username: req.params.Username})
+app.delete('/users/:UserID', passport.authenticate("jwt", { session: false }), (req, res) => {
+    Users.findOneAndRemove({ _id: req.params.UserID})
         .then((user) => {
             if (!user) {
                 res.status(400).send(req.params.Username + " was not found.");
