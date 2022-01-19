@@ -78,17 +78,17 @@ app.get('/movies/:Title', passport.authenticate("jwt", { session: false }), (req
 
 
 
-// //Return data about a genre by name/title.
-// app.get('/genres/:Name', passport.authenticate("jwt", { session: false }), (req, res) => {
-//     Genres.findOne({ Name: req.params.Name})
-//         .then((genre) => {
-//             res.json(genre);
-//         })
-//         .catch ((err) => {
-//             console.error(err);
-//             res.status(500).send("Error: " + err);
-//         });
-// });
+//Return data about a genre by name/title.
+app.get('/genres/:Name', passport.authenticate("jwt", { session: false }), (req, res) => {
+    Genres.findOne({ Name: req.params.Name})
+        .then((genre) => {
+            res.json(genre);
+        })
+        .catch ((err) => {
+            console.error(err);
+            res.status(500).send("Error: " + err);
+        });
+});
 
 
 //Return data about a genre by name/title.
@@ -131,8 +131,8 @@ app.get('/users', passport.authenticate("jwt", { session: false }), (req, res) =
 });
 
 //Return a User by Username
-app.get('/users/:Username', passport.authenticate("jwt", { session: false }), (req,res) => {
-    Users.findOne({ Username: req.params.Username})
+app.get('/users/:UserID', passport.authenticate("jwt", { session: false }), (req,res) => {
+    Users.findOne({ _id: req.params.UserID})
         .then((user) => {
             res.json(user);
         })
