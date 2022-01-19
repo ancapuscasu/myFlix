@@ -248,6 +248,41 @@ app.put('/users/:Username',
         });
 });
 
+app.put('/users/:UserID', 
+    [
+        // check ('Username', 'Username can only contain letter and numbers - no special characters allowed').isAlphanumeric(),
+        // check ('Username', 'Username must be 5 characters long').isLength({min: 5}),
+        // check ('Password', 'Password must be at least 8 characters long').isLength({min: 8}),
+    ], passport.authenticate("jwt", { session: false }), (req, res) => {
+
+        let errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(422).json({ errors: errors.array() });
+        }
+
+        let hashedPassword = Users.hashPassword(req.body.Password);
+
+        Users.findOneAndUpdate({ _id: req.params.UserID},
+            {$set: {
+                FirstName: req.body.FirstName,
+                LastName: req.body.LastName,
+                Username: req.body.Username,
+                Email: req.body.Email,
+                Password: hashedPassword,
+                Birthdate: req.body.Birthdate
+            }
+        },
+        { new: true },
+        (err, updatedUser) => {
+            if (err) {
+                console.error(err);
+                res.status(500).send('Error: ' + err);
+            } else {
+                res.json(updatedUser);
+            }
+        });
+});
+
 
 //Allow users to add a movie to their list of favorites 
 app.post('/users/:Username/movies/:MovieID', passport.authenticate("jwt", { session: false }), (req, res) => {
