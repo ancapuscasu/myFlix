@@ -1,3 +1,10 @@
+//Atatus 
+var atatus = require("atatus-nodejs");
+atatus.start({
+    licenseKey: "lic_apm_ef5f73116b7a481eae592ec7528f98d6",
+    appName: "Movie.api",
+});
+
 //Import <express>, <morgan>, <mongoose>, <./models.js>, <lodash>
 const express = require ('express'),
 morgan = require('morgan'),
