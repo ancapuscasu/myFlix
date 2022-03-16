@@ -113,9 +113,20 @@ app.get('/movies/:Title', passport.authenticate("jwt", { session: false }), (req
 //         });
 // });
 
-
+//UNCOMMENT AFTER TESTING
+// //Return data about a genre by name/title.
+// app.get('/genres', passport.authenticate("jwt", { session: false }), (req, res) => {
+//     Genres.find()
+//         .then((genres) => {
+//             res.status(201).json(genres);
+//         })
+//         .catch ((err) => {
+//             console.error(err);
+//             res.status(500).send("MEOW: " + err);
+//         });
+// });
 //Return data about a genre by name/title.
-app.get('/genres', passport.authenticate("jwt", { session: false }), (req, res) => {
+app.get('/genres', (req, res) => {
     Genres.find()
         .then((genres) => {
             res.status(201).json(genres);
