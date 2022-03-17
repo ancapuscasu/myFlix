@@ -164,8 +164,21 @@ app.get('/users', passport.authenticate("jwt", { session: false }), (req, res) =
         });
 });
 
+//UNCOMMENT AFTER TESTING
+// //Return a User by Username
+// app.get('/users/:UserID', passport.authenticate("jwt", { session: false }), (req,res) => {
+//     Users.findOne({ _id: req.params.UserID})
+//         .then((user) => {
+//             res.json(user);
+//         })
+//         .catch((err) => {
+//             console.error(err);
+//             res.status(500).send('Error: ' + err);
+//         });
+// });
+
 //Return a User by Username
-app.get('/users/:UserID', passport.authenticate("jwt", { session: false }), (req,res) => {
+app.get('/users/:UserID', (req,res) => {
     Users.findOne({ _id: req.params.UserID})
         .then((user) => {
             res.json(user);
@@ -235,52 +248,6 @@ app.post('/users',
 });
 
 
-
-//Allow users to update their User Info by Username
-/* Expect a JSON object with one or more fields updated:
-    {
-        FirstName: {type: String, required: true},
-        LastName: {type: String, required: true},
-        Username: {type: String, required: true},
-        Email: {type: String, required: true},
-        Password: {type: String, required: true},
-        Birthdate: Date
-    }
-*/
-// app.put('/users/:Username', 
-//     [
-//         // check ('Username', 'Username can only contain letter and numbers - no special characters allowed').isAlphanumeric(),
-//         // check ('Username', 'Username must be 5 characters long').isLength({min: 5}),
-//         // check ('Password', 'Password must be at least 8 characters long').isLength({min: 8}),
-//     ], passport.authenticate("jwt", { session: false }), (req, res) => {
-
-//         let errors = validationResult(req);
-//         if (!errors.isEmpty()) {
-//             return res.status(422).json({ errors: errors.array() });
-//         }
-
-//         let hashedPassword = Users.hashPassword(req.body.Password);
-
-//         Users.findOneAndUpdate({ Username: req.params.Username},
-//             {$set: {
-//                 FirstName: req.body.FirstName,
-//                 LastName: req.body.LastName,
-//                 Username: req.body.Username,
-//                 Email: req.body.Email,
-//                 Password: hashedPassword,
-//                 Birthdate: req.body.Birthdate
-//             }
-//         },
-//         { new: true },
-//         (err, updatedUser) => {
-//             if (err) {
-//                 console.error(err);
-//                 res.status(500).send('Error: ' + err);
-//             } else {
-//                 res.json(updatedUser);
-//             }
-//         });
-// });
 
 app.put('/users/:UserID', 
     [
