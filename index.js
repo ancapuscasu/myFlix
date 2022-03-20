@@ -31,7 +31,13 @@ app.use(express.static('public')); // middleware for serving static files
 
 //Import <cors> - Middleware for controlling which domains have access
 const cors = require('cors');
-let allowedOrigins = ['http://localhost:8080', 'http://localhost:1234', 'https://ancas-myflix-app.netlify.app', 'http://localhost:4200', 'https://ancapuscasu.github.io'];
+let allowedOrigins = [
+    'http://localhost:8080', 
+    'http://localhost:1234', 
+    'https://ancas-myflix-app.netlify.app', 
+    'http://localhost:4200', 
+    'https://ancapuscasu.github.io'
+];
 
 app.use(cors({
   origin: (origin, callback) => {
