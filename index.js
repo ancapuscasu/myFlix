@@ -52,7 +52,7 @@ let allowedOrigins = [
   "https://ancas-myflix-app.netlify.app",
   "http://localhost:4200",
   "https://ancapuscasu.github.io",
-  "https://myflix-react.web.app/",
+  "https://myflix-react.web.app",
 ];
 
 //checks if the domain the request came from is allowed
