@@ -301,10 +301,6 @@ app.put(
     check("Username", "Username must be 5 characters long").isLength({
       min: 5,
     }),
-    check("Password", "Password is required").not().isEmpty(),
-    check("Password", "Password must be at least 8 characters long").isLength({
-      min: 8,
-    }),
     check("Email", "Valid email is required").isEmail(),
   ],
   passport.authenticate("jwt", { session: false }),
