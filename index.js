@@ -167,7 +167,6 @@ app.post(
             Username: req.body.Username,
             Email: req.body.Email,
             Password: hashedPassword,
-            Birthdate: req.body.Birthdate,
           })
             .then((user) => {
               res.status(201).json(user);
@@ -310,8 +309,6 @@ app.put(
       return res.status(422).json({ errors: errors.array() });
     }
 
-    let hashedPassword = Users.hashPassword(req.body.Password);
-
     Users.findOneAndUpdate(
       { _id: req.params.UserID },
       {
@@ -320,8 +317,6 @@ app.put(
           LastName: req.body.LastName,
           Username: req.body.Username,
           Email: req.body.Email,
-          Password: hashedPassword,
-          Birthdate: req.body.Birthdate,
         },
       },
       { new: true },
