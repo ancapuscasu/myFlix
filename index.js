@@ -33,18 +33,6 @@ const Users = Models.User;
 //     useUnifiedTopology: true
 // });
 
-//Connects mongoose to the myFlix online database
-// mongoose.connect(
-//   "mongodb+srv://myFlixDBAdmin:PoWl1GeQu9RI3Xw0@dbcluster.pkf0k.mongodb.net/?retryWrites=true&w=majority",
-//   {
-//     useNewUrlParser: true,
-//     useUnifiedTopology: true,
-//   }
-// );
-
-console.log("Environment variables:", process.env);
-console.log("MongoDB URI:", process.env.CONNECTION_URI);
-
 mongoose.connect(process.env.CONNECTION_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
