@@ -33,6 +33,7 @@ const Users = Models.User;
 //     useUnifiedTopology: true
 // });
 
+//Connects mongoose to online database (MongoDB Atlas)
 mongoose.connect(process.env.CONNECTION_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
