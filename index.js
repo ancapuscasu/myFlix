@@ -39,6 +39,11 @@ mongoose.connect(process.env.CONNECTION_URI, {
   useUnifiedTopology: true,
 });
 
+// mongoose.connect(MONGODB_URI, {
+//   useNewUrlParser: true,
+//   useUnifiedTopology: true,
+// });
+
 app.use(express.json()); // Parse JSON bodies
 app.use(express.urlencoded({ extended: true })); // Parse URL-encoded bodies
 app.use(morgan("common")); //middleware for logging requests
