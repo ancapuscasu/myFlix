@@ -3,7 +3,7 @@
  * endpoints used to access myFlix data. Requests made to these endpoints use mongoose models created in the 
  * models file and are authenticated using strategies implemented in the passport file. The connect method 
  * establishes a connection between mongoose and the database, which is hosted on MongoDB Atlas. The 
- * server and endpoints are hosted on Heroku.
+ * server and endpoints are hosted on Render.
 
  * @requires mongoose Connects the app to the database and implements data schemas using models.
  * @requires './models.js' The file where data schemas and models are defined.
@@ -49,9 +49,7 @@ const cors = require("cors");
 let allowedOrigins = [
   "http://localhost:8080",
   "http://localhost:1234",
-  "https://ancas-myflix-app.netlify.app",
   "http://localhost:4200",
-  "https://ancapuscasu.github.io",
   "https://myflix-react.web.app",
 ];
 

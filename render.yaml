@@ -10,4 +10,4 @@ services:
     numInstances: 1
     envVars:
       - key: CONNECTION_URI # Imported from Heroku app
-        value: mongodb+srv://myFlixDBAdmin:6fcWcBNC4nQ2KzNT@dbcluster.pkf0k.mongodb.net/myFlixDB?retryWrites&#x3D;true&amp;w&#x3D;majority
+        value: mongodb+srv://myFlixDBAdmin:eUI4YS0j4kYVcary@dbcluster.pkf0k.mongodb.net/myFlixDB?retryWrites&#x3D;true&amp;w&#x3D;majority
