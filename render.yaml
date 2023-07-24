@@ -8,6 +8,6 @@ services:
     dockerfilePath: Dockerfile.render
     plan: free # optional; defaults to starter
     numInstances: 1
-    envVars:
-      - key: CONNECTION_URI
-        value: mongodb+srv://myFlixDBAdmin:PoWl1GeQu9RI3Xw0@dbcluster.pkf0k.mongodb.net/?retryWrites=true&w=majority
+    # envVars:
+    #   - key: CONNECTION_URI
+    #     value: mongodb+srv://myFlixDBAdmin:PoWl1GeQu9RI3Xw0@dbcluster.pkf0k.mongodb.net/?retryWrites=true&w=majority
